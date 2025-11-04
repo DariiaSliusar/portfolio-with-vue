@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import homeIndex from '../components/pages/home/Index.vue';
 import AdminHomeIndex from '../components/admin/home/Index.vue';
 import AdminAboutEdit from '../components/admin/abouts/Edit.vue';
+import AdminMediasIndex from '../components/admin/medias/Index.vue';
 import NotFoundPage from '../components/NotFoundPage.vue';
 
 const routes = [
@@ -22,6 +23,11 @@ const routes = [
         component:AdminAboutEdit,
     },
     {
+        path:'/admin/medias',
+        name: 'admin.medias.index',
+        component:AdminMediasIndex,
+    },
+    {
         path:'/:any(.*)*',
         name:'notFoundPage',
         component: NotFoundPage,
@@ -30,6 +36,7 @@ const routes = [
 
 const router = createRouter({
     history: createWebHistory(),
+    linkExactActiveClass: 'nav-active',
     routes,
 });
 

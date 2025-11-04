@@ -4,21 +4,22 @@
             <div class="nav-list">
                 <ul class="nav-list-item-setting">
                     <li>
-                        <a href="#" class="nav-active">
+                        <router-link to="/admin/abouts" >
                             <span><i class="fas fa-cog"></i></span>
                             <span>About Me</span>
-                        </a>
+                        </router-link>
                     </li>
                 </ul>
                 <ul class="nav-list-item-setting">
                     <li>
-                        <a href="#" >
+                        <router-link to="/admin/medias" >
                             <span><i class="fas fa-cog"></i></span>
                             <span>My social Media</span>
-                        </a>
+                        </router-link>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 </template>
+

@@ -8,16 +8,16 @@
                 <div class="nav-list">
                     <ul>
                         <li>
-                            <a class="nav-active" href="dashboard.html">
+                            <router-link to="/admin/dashboard">
                                 <span><i class="fas fa-home"> </i></span>
                                 <span>Home</span>
-                            </a>
+                            </router-link>
                         </li>
                         <li>
-                            <a  href="about.html">
+                            <router-link to="/admin/abouts">
                                 <span><i class="fas fa-home"> </i></span>
                                 <span>About Me</span>
-                            </a>
+                            </router-link>
                         </li>
                         <li>
                             <a  href="service.html">
@@ -85,3 +85,5 @@
         </nav>
     </aside>
 </template>
+<script setup lang="ts">
+</script>

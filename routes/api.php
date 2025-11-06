@@ -12,4 +12,6 @@ Route::get('/user', function (Request $request) {
 Route::get('abouts', [AboutController::class, 'edit']);
 Route::post('abouts', [AboutController::class, 'update']);
 //medias routes
- Route::get('/admin/medias', [MediaController::class, 'index']);
+ Route::get('medias', [MediaController::class, 'index']);
+ Route::post('medias', [MediaController::class, 'store']);
+Route::delete('medias/{media}', [MediaController::class, 'destroy']);

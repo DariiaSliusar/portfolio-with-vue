@@ -18,4 +18,18 @@ class MediaController extends Controller
                 'medias' => $medias
             ], 200);
     }
+
+    public function store(Request $request)
+    {
+        $media = new Media;
+        $media->link = $request->link;
+        $media->icon = $request->icon;
+        $media->save();
+    }
+
+    public function destroy($id)
+    {
+        $media = Media::find($id);
+        $media->delete();
+    }
 }

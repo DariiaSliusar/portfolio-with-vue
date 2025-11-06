@@ -1,19 +1,36 @@
 <script setup>
 import Base from "../../layouts/admin/Base.vue";
 import Nav from "../../layouts/admin/Nav.vue";
+import MediaForm from "./Form.vue";
+import EventBus from "../../../lib/EventBus.js";
 import {onMounted, ref} from "vue";
 
 let medias = ref([]);
 
 onMounted(async () => {
-    await getMedias();
-})
+   getMedias();
+});
+
+EventBus.on('show-medias', (() => {
+    getMedias();
+}));
 
 const getMedias = async () => {
     await axios.get("/api/medias")
         .then(({data}) => {
             // console.log(data)
             medias.value = data.medias
+        })
+}
+
+const deleteMedia = async (id) => {
+    await axios.delete(`/api/medias/${id}`)
+        .then(({data}) => {
+            toast.fire({
+                icon: 'success',
+                title: 'Social media deleted successfully!'
+            })
+            getMedias();
         })
 }
 </script>
@@ -48,28 +65,14 @@ const getMedias = async () => {
                                 <button class="service_table-icon">
                                     <i :class="media.icon"></i>
                                 </button>
-                                <button>
+                                <button @click="deleteMedia(media.id)">
                                     delete
                                 </button>
                             </div>
 
-                            <br>
+                            <br/>
 
-                            <div class="social_table-heading">
-                                <p>Link</p>
-                                <span style="color:#006fbb;">(Find your icon class: Font Awesome)</span>
-                                <p></p>
-                            </div>
-                            <p></p>
-                            <div class="social_table-items">
-
-                                <input type="text" />
-
-                                <input type="text" />
-                                <button>
-                                    Add Media
-                                </button>
-                            </div>
+                            <MediaForm/>
 
                         </div>
                     </div>

@@ -17,7 +17,7 @@
     })
 
     onMounted(async() => {
-        await getAbout()
+        getAbout()
     })
 
     const getAbout = async () => {

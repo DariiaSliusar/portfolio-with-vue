@@ -16,11 +16,11 @@ class MediaSeeder extends Seeder
         Media::insert([
             [
                 'link' => 'https://www.instagram.com',
-                'icon' => 'fa-brands fa-instagram',
+                'icon' => 'fab fa-instagram',
             ],
             [
                 'link' => 'https://www.linkedin.com',
-                'icon' => 'fa-brands fa-linkedin',
+                'icon' => 'fab fa-linkedin-in',
             ],
         ]);
     }

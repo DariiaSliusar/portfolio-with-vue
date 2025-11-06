@@ -18,7 +18,7 @@ EventBus.on('show-medias', (() => {
 const getMedias = async () => {
     await axios.get("/api/medias")
         .then(({data}) => {
-            // console.log(data)
+            // console.log('data', data)
             medias.value = data.medias
         })
 }

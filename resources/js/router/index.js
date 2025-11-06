@@ -1,9 +1,15 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import homeIndex from '../components/pages/home/Index.vue';
+
 import AdminHomeIndex from '../components/admin/home/Index.vue';
+
 import AdminAboutEdit from '../components/admin/abouts/Edit.vue';
+
 import AdminMediasIndex from '../components/admin/medias/Index.vue';
+
+import AdminServicesIndex from '../components/admin/services/Index.vue';
+
 import NotFoundPage from '../components/NotFoundPage.vue';
 
 const routes = [
@@ -26,6 +32,11 @@ const routes = [
         path:'/admin/medias',
         name: 'admin.medias.index',
         component:AdminMediasIndex,
+    },
+    {
+        path:'/admin/services',
+        name: 'admin.services.index',
+        component:AdminServicesIndex,
     },
     {
         path:'/:any(.*)*',

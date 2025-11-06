@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class AboutController extends Controller
 {
-    //
     public function edit()
     {
         $about = About::latest()->first();
@@ -32,47 +31,48 @@ class AboutController extends Controller
         $about->description = $request->description;
         $about->summary = $request->summary;
         $about->tagline = $request->tagline;
-        $about->cv = $request->cv;
 
-        if($request->home_image != $about->home_image){
-            $home_image = public_path("/upload/").$about->home_image;
-            if(file_exists($home_image)){
-                @unlink($home_image);
+        // Handle home image
+        if ($request->hasFile('home_image')) {
+            $oldImage = public_path("/uploads/") . $about->home_image;
+            if ($about->home_image && file_exists($oldImage)) {
+                @unlink($oldImage);
             }
-            $home_image_name = time().'.'.$request()->home_image->getClientOriginalExtension();
-            $request()->home_image->move(public_path('upload/'), $home_image_name);
+            $home_image = $request->file('home_image');
+            $home_image_name = time() . '_home.' . $home_image->getClientOriginalExtension();
+            $home_image->move(public_path('uploads/'), $home_image_name);
             $about->home_image = $home_image_name;
-        } else {
-            $about->home_image = $about->home_image;
         }
 
-        if($request->banner_image != $about->banner_image){
-            $banner_image = public_path("/upload/").$about->banner_image;
-            if(file_exists($banner_image)){
-                @unlink($banner_image);
+        // Handle banner image
+        if ($request->hasFile('banner_image')) {
+            $oldBanner = public_path("/uploads/") . $about->banner_image;
+            if ($about->banner_image && file_exists($oldBanner)) {
+                @unlink($oldBanner);
             }
-            $banner_image_name = time().'.'.$request()->banner_image->getClientOriginalExtension();
-            $request()->banner_image->move(public_path('upload/'), $banner_image_name);
+            $banner_image = $request->file('banner_image');
+            $banner_image_name = time() . '_banner.' . $banner_image->getClientOriginalExtension();
+            $banner_image->move(public_path('uploads/'), $banner_image_name);
             $about->banner_image = $banner_image_name;
-        } else {
-            $about->banner_image = $about->banner_image;
         }
 
-        if($request->cv != $about->cv){
-            $cv = public_path("/upload/").$about->cv;
-            if(file_exists($cv)){
-                @unlink($cv);
+        // Handle CV
+        if ($request->hasFile('cv')) {
+            $oldCv = public_path("/uploads/") . $about->cv;
+            if ($about->cv && file_exists($oldCv)) {
+                @unlink($oldCv);
             }
-            $cv_name = time().'.'.$request()->cv->getClientOriginalExtension();
-            $request()->cv->move(public_path('upload/'), $cv_name);
+            $cv = $request->file('cv');
+            $cv_name = time() . '_cv.' . $cv->getClientOriginalExtension();
+            $cv->move(public_path('uploads/'), $cv_name);
             $about->cv = $cv_name;
-        } else {
-            $about->cv = $about->cv;
         }
 
         $about->save();
+
         return response()->json([
-            'message' => 'About updated successfully'
+            'message' => 'About updated successfully',
+            'about' => $about
         ], 200);
     }
 }

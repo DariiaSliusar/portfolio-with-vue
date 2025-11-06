@@ -14,6 +14,9 @@
         home_image: '',
         banner_image: '',
         cv: '',
+        home_image_file: null,
+        banner_image_file: null,
+        cv_file: null
     })
 
     onMounted(async() => {
@@ -34,49 +37,56 @@
                 form.home_image = data.about.home_image
                 form.banner_image = data.about.banner_image
                 form.cv = data.about.cv
+                form.home_image_file = null
+                form.banner_image_file = null
+                form.cv_file = null
         })
     }
 
     let errors = ref([]);
 
     const getHomeImage = () => {
-        if (form.home_image) {
-            return "uploads/" + form.home_image;
+        if (form.home_image_file) {
+            return URL.createObjectURL(form.home_image_file);
+        } else if (form.home_image) {
+            return "/uploads/" + form.home_image;
         } else {
             return "/template/assets/img/avatar.jpg";
         }
     }
 
     const getBannerImage = () => {
-        if (form.banner_image) {
-            return "uploads/" + form.banner_image;
+        if (form.banner_image_file) {
+            return URL.createObjectURL(form.banner_image_file);
+        } else if (form.banner_image) {
+            return "/uploads/" + form.banner_image;
         } else {
             return "/template/assets/img/avatar.jpg";
         }
     }
 
     const handleHomeImageChange = (e) => {
-        form.home_image = e.target.files[0];
+        form.home_image_file = e.target.files[0];
         const reader = new FileReader();
         reader.onload = () => {
             let output = document.getElementById("home_img");
             output.src = reader.result;
         }
-        reader.readAsDataURL(e.target.files[0]);
+        reader.readAsDataURL(form.home_image_file);
     }
 
     const handleBannerImageChange = (e) => {
-        form.banner_image = e.target.files[0];
+        form.banner_image_file = e.target.files[0];
         const reader = new FileReader();
         reader.onload = () => {
             let output = document.getElementById("banner-img");
             output.src = reader.result;
         }
-        reader.readAsDataURL(e.target.files[0]);
+        reader.readAsDataURL(form.banner_image_file);
     }
 
     const handlePdfChange = (e) => {
-        form.cv = e.target.files[0];
+        form.cv_file = e.target.files[0];
     }
 
     const handleSave = async () => {
@@ -89,14 +99,14 @@
         formData.append('summary', form.summary);
         formData.append('tagline', form.tagline);
 
-        if (form.home_image instanceof File) {
-            formData.append('home_image', form.home_image);
+        if (form.home_image_file) {
+            formData.append('home_image', form.home_image_file);
         }
-        if (form.banner_image instanceof File) {
-            formData.append('banner_image', form.banner_image);
+        if (form.banner_image_file) {
+            formData.append('banner_image', form.banner_image_file);
         }
-        if (form.cv instanceof File) {
-            formData.append('cv', form.cv);
+        if (form.cv_file) {
+            formData.append('cv', form.cv_file);
         }
 
         await axios.post("/api/abouts/", formData)
@@ -109,7 +119,6 @@
             })
             .catch((error) => {
                 if(error.response.status === 422){
-                    // console.log('errorse', error.response.data.message);
                     errors.value = error.response.data.errors;
                 }
             });

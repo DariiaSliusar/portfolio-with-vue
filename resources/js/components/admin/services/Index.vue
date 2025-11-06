@@ -1,12 +1,18 @@
 <script setup>
 import Base from "../../layouts/admin/Base.vue";
+import Form from "./Form.vue";
 import {onMounted, ref} from "vue";
+import EventBus from "../../../lib/EventBus.js";
 
 let services = ref([])
 
 onMounted(async () => {
     getServices()
 })
+
+EventBus.on('show-services', (() => {
+    getServices()
+}))
 
 const getServices = async () => {
     await axios.get("/api/services")
@@ -23,7 +29,7 @@ const getServices = async () => {
     <section class="services" id="services">
         <div class="titlebar">
             <h1>Services</h1>
-            <button class="open-modal">New Service</button>
+            <Form/>
         </div>
         <div class="table">
             <div class="table-filter">
@@ -66,41 +72,6 @@ const getServices = async () => {
                     </button>
                 </div>
             </div>
-
         </div>
-
-        <!-------------- SERVICES MODAL --------------->
-        <div class="modal ">
-            <div class="modal-content">
-                <h2>Create Service</h2>
-                <span class="close-modal">×</span>
-                <hr>
-                <div>
-                    <label>Service Name</label>
-                    <input type="text" />
-
-                    <label>Icon Class <span style="color:#006fbb;">(Find your suitable icon: Font
-                                Awesome)</span></label>
-
-                    <input type="text" />
-
-                    <label>Description</label>
-                    <textarea cols="10" rows="5"></textarea>
-                </div>
-                <hr>
-                <div class="modal-footer">
-                    <button class="close-modal">
-                        Cancel
-                    </button>
-                    <button class="secondary close-modal">
-                        <span><i class="fa fa-spinner fa-spin"></i></span>
-                        Save
-                    </button>
-                </div>
-
-            </div>
-        </div>
-
-
     </section>
 </template>

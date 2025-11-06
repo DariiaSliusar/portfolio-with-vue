@@ -18,3 +18,4 @@ Route::post('medias', [MediaController::class, 'store']);
 Route::delete('medias/{media}', [MediaController::class, 'destroy']);
 //services routes
 Route::get('services', [ServiceController::class, 'index']);
+Route::post('services', [ServiceController::class, 'store']);

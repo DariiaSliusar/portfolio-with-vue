@@ -17,4 +17,16 @@ class ServiceController extends Controller
                 'services' => $services
             ], 200);
     }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title' => 'required',
+        ]);
+        $service = new Service;
+        $service->title = $request->title;
+        $service->description = $request->description;
+        $service->icon = $request->icon;
+        $service->save();
+    }
 }

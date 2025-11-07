@@ -29,4 +29,22 @@ class ServiceController extends Controller
         $service->icon = $request->icon;
         $service->save();
     }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required',
+        ]);
+        $service = Service::find($id);
+        $service->title = $request->title;
+        $service->description = $request->description;
+        $service->icon = $request->icon;
+        $service->save();
+    }
+
+    public function destroy($id)
+    {
+        $service = Service::find($id);
+        $service->delete();
+    }
 }

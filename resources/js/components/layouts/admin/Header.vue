@@ -2,7 +2,7 @@
     <header>
         <nav>
             <ul>
-                <li><img src="/public/template/assets/img/logo.png" alt=""></li>
+                <li><img src="/public/template/assets/img/ds.jpg" alt=""></li>
             </ul>
             <ul class="header-profile">
                 <li class="avatar-item"><img src="/public/template/assets/img/avatar.jpg" alt="" class="avatar-img"></li>

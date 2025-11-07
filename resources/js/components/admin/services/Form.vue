@@ -12,8 +12,12 @@ const form = reactive({
 let errors = ref([]);
 
 const showModal = ref(false);
+
+const editMode = ref(false);
+
 const openModal = () => {
     showModal.value = true;
+    editMode.value = false;
 }
 
 const closeModal = () => {
@@ -23,15 +27,50 @@ const closeModal = () => {
     form.description = '';
 }
 
-const handleSave = async () => {
+EventBus.on('show-service-form', ((service) => {
+    showModal.value = true;
+    editMode.value = true;
+    form.id = service.id;
+    form.title = service.title;
+    form.icon = service.icon;
+    form.description = service.description;
+}));
+
+const handleSave = async (values, actions) => {
+    if(editMode.value){
+        updateService(values, actions);
+    } else {
+        createService(values, actions);
+    }
+}
+
+const createService = async (values, actions) => {
     await axios.post('/api/services', form)
         .then(({data}) => {
-        closeModal();
-        toast.fire({
-            icon: 'success',
-            title: 'Service added successfully!'
+            closeModal();
+            toast.fire({
+                icon: 'success',
+                title: 'Service added successfully!'
+            })
+            EventBus.emit('show-services');
         })
-        EventBus.emit('show-services');
+        .catch((error) => {
+            if(error.response.status === 422){
+                errors.value = error.response.data.errors;
+            }
+        });
+}
+
+const updateService = async (values, actions) => {
+    // alert('update service ' + form.id);
+    await axios.post(`/api/services/${form.id}`, form)
+        .then(({data}) => {
+            closeModal();
+            toast.fire({
+                icon: 'success',
+                title: 'Service updated successfully!'
+            })
+            EventBus.emit('show-services');
         })
         .catch((error) => {
             if(error.response.status === 422){
@@ -46,7 +85,11 @@ const handleSave = async () => {
     <!-------------- SERVICES MODAL --------------->
     <div class="modal " :class="showModal ? 'show' : '' ">
         <div class="modal-content">
-            <h2>Create Service</h2>
+            <h2>
+                <span v-if="editMode">Edit</span>
+                <span v-else>Create</span>
+                Service
+            </h2>
             <span class="close-modal" @click="closeModal">×</span>
             <hr>
             <div>

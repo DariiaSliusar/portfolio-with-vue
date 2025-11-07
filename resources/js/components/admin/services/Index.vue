@@ -21,6 +21,34 @@ const getServices = async () => {
             services.value = data.services
         })
 }
+
+const onEdit = (service) => {
+    EventBus.emit('show-service-form', service)
+}
+
+const handleDelete = (id) => {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            axios.delete(`/api/services/${id}`)
+                .then(({data}) => {
+                    Swal.fire({
+                        title: 'Deleted!',
+                        text: 'Your service has been deleted.',
+                        icon: 'success'
+                    });
+                    getServices()
+                })
+        }
+    })
+}
 </script>
 
 <template>
@@ -64,10 +92,10 @@ const getServices = async () => {
                 </button>
                 <p>{{service.description}}</p>
                 <div>
-                    <button class="btn-icon success">
+                    <button class="btn-icon success" @click="onEdit(service)">
                         <i class="fas fa-pencil-alt"></i>
                     </button>
-                    <button class="btn-icon danger">
+                    <button class="btn-icon danger" @click="handleDelete(service.id)">
                         <i class="far fa-trash-alt"></i>
                     </button>
                 </div>
